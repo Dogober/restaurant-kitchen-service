@@ -16,7 +16,7 @@ class User(AbstractUser):
         ("waiter", "Can only bring orders"),
     ]
 
-    years_of_experience = models.IntegerField()
+    years_of_experience = models.IntegerField(null=True)
     position = models.CharField(max_length=6, choices=POSITION_CHOICES, default="chef")
 
 
