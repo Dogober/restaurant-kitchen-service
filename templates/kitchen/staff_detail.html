@@ -1,7 +1,30 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-  <div>
-
+  <div class="container mt-5 p-3 mb-5">
+    <div class="row">
+      <div class="col-md-7 bg-default rounded mr-5">
+        <h2>Dish's creation</h2>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form|crispy}}
+          <button type="submit" class="btn btn-warning mb-3">Create a dish</button>
+        </form>
+      </div>
+      <div class="col-md-4 bg-default rounded">
+        <h2>My tasks</h2>
+        <ul class="list-group">
+          {% for task in tasks %}
+            <li class="list-group-item">
+              <strong>{{ task.dish.name }}</strong> - {{ task.description }}<br>
+              Status: {{ task.get_status_display }}
+            </li>
+          {% empty %}
+            <li class="list-group-item">There is no any tasks</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
 {% endblock %}

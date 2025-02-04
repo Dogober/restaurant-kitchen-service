@@ -1,24 +1,29 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from kitchen.models import (
-    DishType,
-    User,
-    Category,
-    Ingredient,
-    Dish,
-    Order,
-    Task
-)
+from kitchen.models import DishType, User, Category, Ingredient, Dish, Order, Task
 
 admin.site.register(DishType)
 
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ("years_of_experience", "position", )
+    list_display = UserAdmin.list_display + (
+        "years_of_experience",
+        "position",
+    )
     fieldsets = UserAdmin.fieldsets + (
-        (("Additional info", {"fields": ("years_of_experience", "position", )}),)
+        (
+            (
+                "Additional info",
+                {
+                    "fields": (
+                        "years_of_experience",
+                        "position",
+                    )
+                },
+            ),
+        )
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
         (
