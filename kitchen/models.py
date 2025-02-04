@@ -50,6 +50,7 @@ class Dish(models.Model):
     class Meta:
         ordering = ["name"]
 
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ("pending", "Is pending"),
@@ -63,6 +64,7 @@ class Order(models.Model):
 
     class Meta:
         ordering = ["created_at"]
+
 
 class Task(models.Model):
     STATUS_CHOICES = [
