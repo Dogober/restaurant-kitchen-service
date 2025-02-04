@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import generic
 
 from kitchen.forms import DishForm
-from kitchen.models import Dish, Task, Order, User
+from kitchen.models import Dish, Task, Order, User, DishType
 
 
 @login_required
@@ -61,3 +62,28 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
+
+
+class DishTypeListView(LoginRequiredMixin, generic.ListView):
+    model = DishType
+    template_name = "kitchen/dish_type_list.html"
+    context_object_name = "dish_type_list"
+
+class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
+    model = DishType
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:dish-type-list")
+    template_name = "kitchen/dish_type_form.html"
+
+class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = DishType
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:dish-type-list")
+    template_name = "kitchen/dish_type_form.html"
+    context_object_name = "dish_type"
+
+class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = DishType
+    success_url = reverse_lazy("kitchen:dish-type-list")
+    template_name = "kitchen/dish_type_confirm_delete.html"
+    context_object_name = "dish_type"
