@@ -32,3 +32,8 @@ body::before {
     align-items: center;
     height: 70vh;
 }
+
+.dropdown-item:hover {
+    background-color: #ffc107;
+    color: #212529;
+}

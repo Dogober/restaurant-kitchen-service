@@ -11,6 +11,16 @@
       <li class="nav-item active">
         <a class="nav-link" href={% url 'kitchen:staff-list' %}>Staff <span class="sr-only">(current)</span></a>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="kitchenLibrary" role="button"
+           data-toggle="dropdown" aria-expanded="false">
+          Kitchen library
+        </a>
+        <div class="dropdown-menu" aria-labelledby="kitchenLibrary">
+          <a class="dropdown-item" href="#">Dish types</a>
+          <a class="dropdown-item" href="#">Ingredients</a>
+        </div>
+      </li>
     </ul>
     {% if user.is_authenticated %}
       <a class="nav-link text-white" href="{% url 'kitchen:staff-detail' user.id %}">User: {{ user.get_username }}</a>
