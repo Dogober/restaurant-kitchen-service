@@ -1,9 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views import generic
 
-from kitchen.models import Dish, Task, Order
+from kitchen.models import Dish, Task, Order, User
 
 
 @login_required
@@ -23,3 +25,14 @@ def index(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "kitchen/index.html", context=context)
+
+class StaffListView(LoginRequiredMixin, generic.ListView):
+    model = User
+    template_name = "kitchen/staff_list.html"
+    context_object_name = "staff_list"
+
+
+class StaffDetailView(LoginRequiredMixin, generic.DetailView):
+    model = User
+    template_name = "kitchen/staff_detail.html"
+    context_object_name = "staff"

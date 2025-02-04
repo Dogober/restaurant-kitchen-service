@@ -14,7 +14,7 @@ body::before {
 }
 
 .bg-default {
-    background-color: rgba(128, 128, 128, 0.6);
+    background-color: rgba(128, 128, 128, 0.6) !important;
 }
 
 .bg-error {
