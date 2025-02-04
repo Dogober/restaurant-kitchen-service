@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from kitchen.models import Dish
+from kitchen.models import Dish, Task, Order
 
 
 @login_required
@@ -12,10 +12,14 @@ def index(request: HttpRequest) -> HttpResponse:
 
     num_users = get_user_model().objects.count()
     num_dishes = Dish.objects.count()
+    num_tasks = Task.objects.count()
+    num_orders = Order.objects.count()
 
     context = {
         "num_users": num_users,
         "num_dishes": num_dishes,
+        "num_tasks": num_tasks,
+        "num_orders": num_orders,
     }
 
     return render(request, "kitchen/index.html", context=context)
