@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from kitchen.forms import DishForm, StaffCreationForm
-from kitchen.models import Dish, Task, Order, User, DishType
+from kitchen.models import Dish, Task, Order, User, DishType, Category
 
 
 @login_required
@@ -110,3 +110,24 @@ class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("kitchen:dish-type-list")
     template_name = "kitchen/dish_type_confirm_delete.html"
     context_object_name = "dish_type"
+
+
+class CategoryListView(LoginRequiredMixin, generic.ListView):
+    model = Category
+
+
+class CategoryCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Category
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:category-list")
+
+
+class CategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Category
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:category-list")
+
+
+class CategoryDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Category
+    success_url = reverse_lazy("kitchen:category-list")
