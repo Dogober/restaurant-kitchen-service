@@ -25,6 +25,10 @@ from .views import (
     OrderDeleteView,
     task_manager_view,
     order_manager_view,
+    DishListView,
+    DishCreateView,
+    DishUpdateView,
+    DishDeleteView,
 )
 
 urlpatterns = [
@@ -52,6 +56,10 @@ urlpatterns = [
     path("orders/<int:pk>/delete/", OrderDeleteView.as_view(), name="order-delete"),
     path("staff/<int:user_id>/<int:task_id>/", task_manager_view, name="task-manager"),
     path("orders/<int:pk>/", order_manager_view, name="order-manager"),
+    path("dishes/", DishListView.as_view(), name="dish-list"),
+    path("dishes/create/", DishCreateView.as_view(), name="dish-create"),
+    path("dishes/<int:pk>/update/", DishUpdateView.as_view(), name="dish-update"),
+    path("dishes/<int:pk>/delete/", DishDeleteView.as_view(), name="dish-delete"),
 ]
 
 app_name = "kitchen"

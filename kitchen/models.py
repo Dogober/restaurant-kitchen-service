@@ -23,6 +23,9 @@ class User(AbstractUser):
     years_of_experience = models.IntegerField(null=True)
     position = models.CharField(max_length=6, choices=POSITION_CHOICES, default="chef")
 
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
