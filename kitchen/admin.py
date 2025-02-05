@@ -1,7 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from kitchen.models import DishType, User, Category, Ingredient, Dish, Order, Task
+from kitchen.models import (
+    DishType,
+    User,
+    Category,
+    Ingredient,
+    Dish,
+    Order,
+    Task,
+)
 
 admin.site.register(DishType)
 

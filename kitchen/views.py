@@ -7,9 +7,25 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from kitchen.forms import DishForm, StaffCreationForm, TaskForm, IngredientSearchForm, StaffSearchForm, \
-    DishTypeSearchForm, CategorySearchForm, DishSearchForm
-from kitchen.models import Dish, Task, Order, User, DishType, Category, Ingredient
+from kitchen.forms import (
+    DishForm,
+    StaffCreationForm,
+    TaskForm,
+    IngredientSearchForm,
+    StaffSearchForm,
+    DishTypeSearchForm,
+    CategorySearchForm,
+    DishSearchForm,
+)
+from kitchen.models import (
+    Dish,
+    Task,
+    Order,
+    User,
+    DishType,
+    Category,
+    Ingredient,
+)
 
 
 @login_required
@@ -84,7 +100,9 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
                 dish = dish_form.save(commit=False)
                 dish.save()
                 dish.users.add(dish_form.cleaned_data["assigned_chef"])
-                dish.ingredients.add(*dish_form.cleaned_data["assigned_ingredients"])
+                dish.ingredients.add(
+                    *dish_form.cleaned_data["assigned_ingredients"]
+                )
                 return redirect("kitchen:staff-detail", pk=self.object.pk)
         elif "task_form" in request.POST:
             dish_form = DishForm()
@@ -98,7 +116,9 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
             dish_form = DishForm(request.POST)
             task_form = TaskForm(request.POST)
 
-        return self.render_to_response(self.get_context_data(dish_form=dish_form, task_form=task_form))
+        return self.render_to_response(
+            self.get_context_data(dish_form=dish_form, task_form=task_form)
+        )
 
 
 class StaffUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -123,9 +143,7 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishTypeListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = DishTypeSearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = DishTypeSearchForm(initial={"name": name})
         return context
 
     def get_queryset(self):
@@ -167,9 +185,7 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CategoryListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = CategorySearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = CategorySearchForm(initial={"name": name})
         return context
 
     def get_queryset(self):
@@ -206,9 +222,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(IngredientListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = IngredientSearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = IngredientSearchForm(initial={"name": name})
         return context
 
     def get_queryset(self):
@@ -240,7 +254,9 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class OrderListView(LoginRequiredMixin, generic.ListView):
     model = Order
-    queryset = Order.objects.prefetch_related("tasks").filter(~Q(status="completed"))
+    queryset = Order.objects.prefetch_related("tasks").filter(
+        ~Q(status="completed")
+    )
     paginate_by = 2
 
     def get_context_data(self, **kwargs):
@@ -249,8 +265,10 @@ class OrderListView(LoginRequiredMixin, generic.ListView):
         task_statuses = []
         for order in self.object_list:
             statuses = [task.status for task in order.tasks.all()]
-            all_completed = False if len(statuses) == 0 else all(
-                status == "completed" for status in statuses
+            all_completed = (
+                False
+                if len(statuses) == 0
+                else all(status == "completed" for status in statuses)
             )
             task_statuses.append((order.id, all_completed))
 
@@ -282,9 +300,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishListView, self).get_context_data(**kwargs)
         name = self.request.GET.get("name", "")
-        context["search_form"] = DishSearchForm(
-            initial={"name": name}
-        )
+        context["search_form"] = DishSearchForm(initial={"name": name})
         return context
 
     def get_queryset(self):
@@ -315,7 +331,9 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def task_manager_view(request: HttpRequest, user_id: int, task_id: int) -> HttpResponse:
+def task_manager_view(
+    request: HttpRequest, user_id: int, task_id: int
+) -> HttpResponse:
     task = Task.objects.get(pk=task_id)
     task.status = "completed"
     task.save()
@@ -326,7 +344,9 @@ def task_manager_view(request: HttpRequest, user_id: int, task_id: int) -> HttpR
 def order_manager_view(request: HttpRequest, pk: int) -> HttpResponse:
     order = Order.objects.get(id=pk)
     task_statuses = [task.status for task in order.tasks.all()]
-    if task_statuses and task_statuses.count("completed") == len(task_statuses):
+    if task_statuses and task_statuses.count("completed") == len(
+        task_statuses
+    ):
         order.status = "completed"
         order.save()
     return redirect("kitchen:order-list")

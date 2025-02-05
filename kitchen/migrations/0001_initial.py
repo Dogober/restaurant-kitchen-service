@@ -65,7 +65,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "password",
+                    models.CharField(max_length=128, verbose_name="password"),
+                ),
                 (
                     "last_login",
                     models.DateTimeField(
@@ -110,7 +113,9 @@ class Migration(migrations.Migration):
                 (
                     "email",
                     models.EmailField(
-                        blank=True, max_length=254, verbose_name="email address"
+                        blank=True,
+                        max_length=254,
+                        verbose_name="email address",
                     ),
                 ),
                 (
@@ -132,7 +137,8 @@ class Migration(migrations.Migration):
                 (
                     "date_joined",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
+                        default=django.utils.timezone.now,
+                        verbose_name="date joined",
                     ),
                 ),
                 ("years_of_experience", models.IntegerField()),
@@ -140,7 +146,10 @@ class Migration(migrations.Migration):
                     "position",
                     models.CharField(
                         choices=[
-                            ("chef", "Can cook and create tasks for other cooks"),
+                            (
+                                "chef",
+                                "Can cook and create tasks for other cooks",
+                            ),
                             ("waiter", "Can only bring orders"),
                         ],
                         default="chef",
@@ -272,7 +281,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dishes",
-                    models.ManyToManyField(related_name="orders", to="kitchen.dish"),
+                    models.ManyToManyField(
+                        related_name="orders", to="kitchen.dish"
+                    ),
                 ),
             ],
             options={

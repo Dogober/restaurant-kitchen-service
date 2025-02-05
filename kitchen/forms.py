@@ -7,7 +7,8 @@ from .models import Dish, User, Ingredient, Task
 
 class DishForm(forms.ModelForm):
     assigned_chef = forms.ModelChoiceField(
-        queryset=get_user_model().objects.filter(position="chef"), required=True
+        queryset=get_user_model().objects.filter(position="chef"),
+        required=True,
     )
     assigned_ingredients = forms.ModelMultipleChoiceField(
         queryset=Ingredient.objects.all(),
@@ -26,11 +27,17 @@ class DishForm(forms.ModelForm):
             "assigned_chef",
         ]
 
+
 class StaffCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "years_of_experience", "position", )
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "years_of_experience",
+            "position",
+        )
 
 
 class TaskForm(forms.ModelForm):
@@ -44,11 +51,7 @@ class IngredientSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by name"
-            }
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
     )
 
 
@@ -57,11 +60,7 @@ class StaffSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by username"
-            }
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search by username"}),
     )
 
 
@@ -70,11 +69,7 @@ class DishTypeSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by name"
-            }
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
     )
 
 
@@ -83,11 +78,7 @@ class CategorySearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by name"
-            }
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
     )
 
 
@@ -96,9 +87,5 @@ class DishSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "Search by name"
-            }
-        )
+        widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
     )
