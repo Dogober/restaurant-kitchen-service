@@ -2,12 +2,17 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Dish, User
+from .models import Dish, User, Ingredient
 
 
 class DishForm(forms.ModelForm):
     assigned_chef = forms.ModelChoiceField(
         queryset=get_user_model().objects.filter(position="chef"), required=True
+    )
+    assigned_ingredients = forms.ModelMultipleChoiceField(
+        queryset=Ingredient.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
     )
 
     class Meta:
@@ -17,7 +22,7 @@ class DishForm(forms.ModelForm):
             "description",
             "price",
             "dish_type",
-            "ingredients",
+            "assigned_ingredients",
             "assigned_chef",
         ]
 

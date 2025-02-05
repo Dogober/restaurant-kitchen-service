@@ -15,6 +15,10 @@ from .views import (
     CategoryCreateView,
     CategoryUpdateView,
     CategoryDeleteView,
+    IngredientListView,
+    IngredientCreateView,
+    IngredientUpdateView,
+    IngredientDeleteView,
 )
 
 urlpatterns = [
@@ -32,6 +36,10 @@ urlpatterns = [
     path("categories/create/", CategoryCreateView.as_view(), name="category-create"),
     path("categories/<int:pk>/update/", CategoryUpdateView.as_view(), name="category-update"),
     path("categories/<int:pk>/delete/", CategoryDeleteView.as_view(), name="category-delete"),
+    path("ingredients/", IngredientListView.as_view(), name="ingredient-list"),
+    path("ingredients/create/", IngredientCreateView.as_view(), name="ingredient-create"),
+    path("ingredients/<int:pk>/update/", IngredientUpdateView.as_view(), name="ingredient-update"),
+    path("ingredients/<int:pk>/delete/", IngredientDeleteView.as_view(), name="ingredient-delete"),
 ]
 
 app_name = "kitchen"

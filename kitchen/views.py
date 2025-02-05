@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from kitchen.forms import DishForm, StaffCreationForm
-from kitchen.models import Dish, Task, Order, User, DishType, Category
+from kitchen.models import Dish, Task, Order, User, DishType, Category, Ingredient
 
 
 @login_required
@@ -60,12 +60,13 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
             dish = form.save(commit=False)
             dish.save()
             dish.users.add(form.cleaned_data["assigned_chef"])
+            dish.ingredients.add(*form.cleaned_data["assigned_ingredients"])
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        return redirect("staff-detail", pk=self.object.pk)
+        return redirect("kitchen:staff-detail", pk=self.object.pk)
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
@@ -131,3 +132,24 @@ class CategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
 class CategoryDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Category
     success_url = reverse_lazy("kitchen:category-list")
+
+
+class IngredientListView(LoginRequiredMixin, generic.ListView):
+    model = Ingredient
+
+
+class IngredientCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Ingredient
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:ingredient-list")
+
+
+class IngredientUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Ingredient
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:ingredient-list")
+
+
+class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Ingredient
+    success_url = reverse_lazy("kitchen:ingredient-list")
