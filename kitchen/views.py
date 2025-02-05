@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from kitchen.forms import DishForm
+from kitchen.forms import DishForm, StaffCreationForm
 from kitchen.models import Dish, Task, Order, User, DishType
 
 
@@ -37,7 +37,7 @@ class StaffListView(LoginRequiredMixin, generic.ListView):
 
 class StaffCreateView(LoginRequiredMixin, generic.CreateView):
     model = User
-    fields = ("username", "first_name", "last_name", "email", "years_of_experience", "position", )
+    form_class = StaffCreationForm
     success_url = reverse_lazy("kitchen:staff-list")
     template_name = "kitchen/staff_form.html"
 
@@ -73,7 +73,7 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
 
 class StaffUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = User
-    fields = ("username", "first_name", "last_name", "email", "years_of_experience", "position", )
+    form_class = StaffCreationForm
     success_url = reverse_lazy("kitchen:staff-list")
     template_name = "kitchen/staff_form.html"
 

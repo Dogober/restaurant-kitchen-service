@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
-from .models import Dish
+from .models import Dish, User
 
 
 class DishForm(forms.ModelForm):
@@ -19,3 +20,9 @@ class DishForm(forms.ModelForm):
             "ingredients",
             "assigned_chef",
         ]
+
+class StaffCreationForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "years_of_experience", "position", )
