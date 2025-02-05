@@ -11,6 +11,19 @@
         <div class="card-header d-flex justify-content-between align-items-center">
           <div>Options</div>
           <div>
+            {% for order_id, all_completed in task_statuses %}
+              {% if order_id == order.id %}
+                {% if all_completed%}
+                  <a href="{% url 'kitchen:order-manager' pk=order.id %}" class="btn btn-success">
+                    Completed
+                  </a>
+                {% else %}
+                  <button class="btn btn-success" disabled>
+                    Completed
+                  </button>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
             <a href="{% url 'kitchen:order-update' order.id %}" class="btn btn-warning">Update</a>
             <a href="{% url 'kitchen:order-delete' order.id %}" class="btn btn-danger">Delete</a>
           </div>

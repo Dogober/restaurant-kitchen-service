@@ -1,12 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from kitchen.forms import DishForm, StaffCreationForm
+from kitchen.forms import DishForm, StaffCreationForm, TaskForm
 from kitchen.models import Dish, Task, Order, User, DishType, Category, Ingredient
 
 
@@ -49,27 +50,36 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = kwargs.get("form", DishForm())
+        context["dish_form"] = kwargs.get("dish_form", DishForm())
+        context["task_form"] = kwargs.get("task_form", TaskForm())
         context["tasks"] = Task.objects.filter(user=self.object)
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = DishForm(request.POST)
-        if form.is_valid():
-            dish = form.save(commit=False)
-            dish.save()
-            dish.users.add(form.cleaned_data["assigned_chef"])
-            dish.ingredients.add(*form.cleaned_data["assigned_ingredients"])
-            return self.form_valid(form)
+
+        if "dish_form" in request.POST:
+            dish_form = DishForm(request.POST)
+            task_form = TaskForm()
+            if dish_form.is_valid():
+                dish = dish_form.save(commit=False)
+                dish.save()
+                dish.users.add(dish_form.cleaned_data["assigned_chef"])
+                dish.ingredients.add(*dish_form.cleaned_data["assigned_ingredients"])
+                return redirect("kitchen:staff-detail", pk=self.object.pk)
+        elif "task_form" in request.POST:
+            dish_form = DishForm()
+            task_form = TaskForm(request.POST)
+            if task_form.is_valid():
+                task = task_form.save(commit=False)
+                task.save()
+                return redirect("kitchen:staff-detail", pk=self.object.pk)
+
         else:
-            return self.form_invalid(form)
+            dish_form = DishForm(request.POST)
+            task_form = TaskForm(request.POST)
 
-    def form_valid(self, form):
-        return redirect("kitchen:staff-detail", pk=self.object.pk)
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
+        return self.render_to_response(self.get_context_data(dish_form=dish_form, task_form=task_form))
 
 
 class StaffUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -157,12 +167,26 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class OrderListView(LoginRequiredMixin, generic.ListView):
     model = Order
+    queryset = Order.objects.prefetch_related("tasks").filter(~Q(status="completed"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        task_statuses = []
+        for order in self.object_list:
+            statuses = [task.status for task in order.tasks.all()]
+            all_completed = all(status == "completed" for status in statuses)
+            task_statuses.append((order.id, all_completed))
+
+        context["task_statuses"] = task_statuses
+        return context
 
 
 class OrderCreateView(LoginRequiredMixin, generic.CreateView):
     model = Order
     fields = "__all__"
     success_url = reverse_lazy("kitchen:order-list")
+
 
 class OrderUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Order
@@ -173,3 +197,21 @@ class OrderUpdateView(LoginRequiredMixin, generic.UpdateView):
 class OrderDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Order
     success_url = reverse_lazy("kitchen:order-list")
+
+
+@login_required
+def task_manager_view(request: HttpRequest, user_id: int, task_id: int) -> HttpResponse:
+    task = Task.objects.get(pk=task_id)
+    task.status = "completed"
+    task.save()
+    return redirect("kitchen:staff-detail", pk=user_id)
+
+
+@login_required
+def order_manager_view(request: HttpRequest, pk: int) -> HttpResponse:
+    order = Order.objects.get(id=pk)
+    task_statuses = [task.status for task in order.tasks.all()]
+    if task_statuses and task_statuses.count("completed") == len(task_statuses):
+        order.status = "completed"
+        order.save()
+    return redirect("kitchen:order-list")

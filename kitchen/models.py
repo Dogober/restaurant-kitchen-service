@@ -62,7 +62,7 @@ class Dish(models.Model):
     class Meta:
         ordering = ["name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -79,6 +79,10 @@ class Order(models.Model):
 
     class Meta:
         ordering = ["created_at"]
+
+    def __str__(self) -> str:
+        dish_names = " ,".join([dish.name for dish in self.dishes.all()])
+        return f"Dishes: ({dish_names}), Status: {self.status}"
 
 
 class Task(models.Model):

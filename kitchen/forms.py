@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Dish, User, Ingredient
+from .models import Dish, User, Ingredient, Task
 
 
 class DishForm(forms.ModelForm):
@@ -31,3 +31,9 @@ class StaffCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "years_of_experience", "position", )
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = "__all__"

@@ -23,6 +23,8 @@ from .views import (
     OrderCreateView,
     OrderUpdateView,
     OrderDeleteView,
+    task_manager_view,
+    order_manager_view,
 )
 
 urlpatterns = [
@@ -48,6 +50,8 @@ urlpatterns = [
     path("orders/create/", OrderCreateView.as_view(), name="order-create"),
     path("orders/<int:pk>/update/", OrderUpdateView.as_view(), name="order-update"),
     path("orders/<int:pk>/delete/", OrderDeleteView.as_view(), name="order-delete"),
+    path("staff/<int:user_id>/<int:task_id>/", task_manager_view, name="task-manager"),
+    path("orders/<int:pk>/", order_manager_view, name="order-manager"),
 ]
 
 app_name = "kitchen"
