@@ -174,7 +174,7 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         form = CategorySearchForm(self.request.GET)
-        queryset = Category.objects.all()
+        queryset = Category.objects.prefetch_related("ingredients")
         if form.is_valid():
             queryset = queryset.filter(
                 name__icontains=form.cleaned_data["name"]
@@ -213,7 +213,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         form = IngredientSearchForm(self.request.GET)
-        queryset = Ingredient.objects.all()
+        queryset = Ingredient.objects.select_related("category")
         if form.is_valid():
             queryset = queryset.filter(
                 name__icontains=form.cleaned_data["name"]
@@ -289,7 +289,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         form = DishSearchForm(self.request.GET)
-        queryset = Dish.objects.all()
+        queryset = Dish.objects.prefetch_related("users", "ingredients")
         if form.is_valid():
             queryset = queryset.filter(
                 name__icontains=form.cleaned_data["name"]

@@ -23,6 +23,7 @@
         <div class="card-body">
           <h5 class="card-title">Category: {{ category.name }}</h5>
           <p class="card-text">Description: {{ category.description }}</p>
+          <p class="card-text">Included ingredients: {{ category.ingredients.all|join:", " }}</p>
         </div>
       </div>
     </div>
