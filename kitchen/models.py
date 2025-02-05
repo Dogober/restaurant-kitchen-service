@@ -37,12 +37,16 @@ class Category(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(
         Category, related_name="ingredients", on_delete=models.CASCADE
     )
 
     class Meta:
         ordering = ["name"]
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Dish(models.Model):
