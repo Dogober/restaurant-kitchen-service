@@ -35,6 +35,13 @@ class StaffListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "staff_list"
 
 
+class StaffCreateView(LoginRequiredMixin, generic.CreateView):
+    model = User
+    fields = ("username", "first_name", "last_name", "email", "years_of_experience", "position", )
+    success_url = reverse_lazy("kitchen:staff-list")
+    template_name = "kitchen/staff_form.html"
+
+
 class StaffDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
     template_name = "kitchen/staff_detail.html"
@@ -64,10 +71,24 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
+class StaffUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = User
+    fields = ("username", "first_name", "last_name", "email", "years_of_experience", "position", )
+    success_url = reverse_lazy("kitchen:staff-list")
+    template_name = "kitchen/staff_form.html"
+
+
+class StaffDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = User
+    success_url = reverse_lazy("kitchen:staff-list")
+    template_name = "kitchen/staff_confirm_delete.html"
+
+
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
     model = DishType
     template_name = "kitchen/dish_type_list.html"
     context_object_name = "dish_type_list"
+
 
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = DishType
@@ -75,12 +96,14 @@ class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("kitchen:dish-type-list")
     template_name = "kitchen/dish_type_form.html"
 
+
 class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = DishType
     fields = "__all__"
     success_url = reverse_lazy("kitchen:dish-type-list")
     template_name = "kitchen/dish_type_form.html"
     context_object_name = "dish_type"
+
 
 class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = DishType
