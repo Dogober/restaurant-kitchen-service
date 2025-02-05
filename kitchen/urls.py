@@ -19,6 +19,10 @@ from .views import (
     IngredientCreateView,
     IngredientUpdateView,
     IngredientDeleteView,
+    OrderListView,
+    OrderCreateView,
+    OrderUpdateView,
+    OrderDeleteView,
 )
 
 urlpatterns = [
@@ -40,6 +44,10 @@ urlpatterns = [
     path("ingredients/create/", IngredientCreateView.as_view(), name="ingredient-create"),
     path("ingredients/<int:pk>/update/", IngredientUpdateView.as_view(), name="ingredient-update"),
     path("ingredients/<int:pk>/delete/", IngredientDeleteView.as_view(), name="ingredient-delete"),
+    path("orders/", OrderListView.as_view(), name="order-list"),
+    path("orders/create/", OrderCreateView.as_view(), name="order-create"),
+    path("orders/<int:pk>/update/", OrderUpdateView.as_view(), name="order-update"),
+    path("orders/<int:pk>/delete/", OrderDeleteView.as_view(), name="order-delete"),
 ]
 
 app_name = "kitchen"

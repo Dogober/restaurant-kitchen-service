@@ -153,3 +153,23 @@ class IngredientUpdateView(LoginRequiredMixin, generic.UpdateView):
 class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Ingredient
     success_url = reverse_lazy("kitchen:ingredient-list")
+
+
+class OrderListView(LoginRequiredMixin, generic.ListView):
+    model = Order
+
+
+class OrderCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Order
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:order-list")
+
+class OrderUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Order
+    fields = "__all__"
+    success_url = reverse_lazy("kitchen:order-list")
+
+
+class OrderDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Order
+    success_url = reverse_lazy("kitchen:order-list")
