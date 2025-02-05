@@ -175,7 +175,9 @@ class OrderListView(LoginRequiredMixin, generic.ListView):
         task_statuses = []
         for order in self.object_list:
             statuses = [task.status for task in order.tasks.all()]
-            all_completed = all(status == "completed" for status in statuses)
+            all_completed = False if len(statuses) == 0 else all(
+                status == "completed" for status in statuses
+            )
             task_statuses.append((order.id, all_completed))
 
         context["task_statuses"] = task_statuses
