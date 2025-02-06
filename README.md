@@ -4,7 +4,9 @@ Management system in which chefs can create new dishes and their types, as well 
 
 ## Check it out
 
-There should be a link to my project
+* You can use these data(Login: Rostik, Password: Dd1234567!) to login
+* Or create your own user
+* https://restaurant-kitchen-service-np6a.onrender.com/
 
 ## Installation
 
