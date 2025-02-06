@@ -1,8 +1,33 @@
-# restaurant-kitchen-service
-Management system in which chefs can create new dishes and their types, as well as designate chefs responsible for preparing each dish
-![db-model-diagram](restaurant-kitchen-service-diagram.drawio)
+# Restaurant kitchen service project
 
-Not implemented features:
- - create the tests
- - logic for waiter (only this one can create orders, but this staff member can do CRUD operations exactly with order not with something else)
- - filters
+Management system in which chefs can create new dishes and their types, as well as designate chefs responsible for preparing each dish
+
+## Check it out
+
+There should be a link to my project
+
+## Installation
+
+```shell
+git clone https://github.com/Dogober/restaurant-kitchen-service
+cd restaurant-kitchen-service
+python3 -m venv venv
+source venv/bin/activate
+pip -r install requirements.txt
+```
+
+## Features
+
+* Authentication and registration functionality for User (staff member)
+* Managing dish, order, dish_type, category, user, task, ingredient directly via website interface
+* Powerful admin-panel with advanced settings
+
+## Not implemented features
+
+* Create the tests
+* Logic for waiter (only this one can create orders, but this staff member can do CRUD operations exactly with order not with something else)
+* Filters
+
+## Diagram
+
+![db-model-diagram](model-diagram.png)
