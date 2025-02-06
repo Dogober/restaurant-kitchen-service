@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -332,7 +332,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 def task_manager_view(
-    request: HttpRequest, user_id: int, task_id: int
+        request: HttpRequest, user_id: int, task_id: int
 ) -> HttpResponse:
     task = Task.objects.get(pk=task_id)
     task.status = "completed"
@@ -345,8 +345,20 @@ def order_manager_view(request: HttpRequest, pk: int) -> HttpResponse:
     order = Order.objects.get(id=pk)
     task_statuses = [task.status for task in order.tasks.all()]
     if task_statuses and task_statuses.count("completed") == len(
-        task_statuses
+            task_statuses
     ):
         order.status = "completed"
         order.save()
     return redirect("kitchen:order-list")
+
+
+def sign_up_view(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        form = StaffCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("/")
+        else:
+            form = StaffCreationForm()
+        return render(request, "kitchen/staff_form.html", {"form": form})

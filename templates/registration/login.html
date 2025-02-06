@@ -10,7 +10,7 @@
       <div class="col-md-4">
         <form method="post" action="{% url 'login' %}" class="form-signin">
           {% csrf_token %}
-          <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+          <h1 class="h3 mb-3 font-weight-normal">Please login</h1>
 
           <label for="id_username" class="sr-only">Username</label>
           <input type="text" id="id_username" name="username" class="form-control" placeholder="Username" required
@@ -25,7 +25,7 @@
             </label>
           </div>
 
-          <button class="btn btn-lg btn-warning btn-block" type="submit">Sign in</button>
+          <button class="btn btn-lg btn-warning btn-block" type="submit">login</button>
           <input type="hidden" name="next" value="{{ next }}">
         </form>
         {% if form.errors %}

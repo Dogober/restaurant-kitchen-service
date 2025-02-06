@@ -29,6 +29,7 @@ from .views import (
     DishCreateView,
     DishUpdateView,
     DishDeleteView,
+    sign_up_view,
 )
 
 urlpatterns = [
@@ -120,6 +121,7 @@ urlpatterns = [
     path(
         "dishes/<int:pk>/delete/", DishDeleteView.as_view(), name="dish-delete"
     ),
+    path("sign_up/", sign_up_view, name="sign-up"),
 ]
 
 app_name = "kitchen"
