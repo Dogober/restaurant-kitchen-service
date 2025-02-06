@@ -1,0 +1,39 @@
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("../images/background.png");
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    transform: scale(1.05);
+    z-index: -1;
+}
+
+.bg-default {
+    background-color: rgba(128, 128, 128, 0.6) !important;
+}
+
+.bg-error {
+    border-radius: 0.25em;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.content-container {
+    display: flex;
+    gap: 5em;
+    color: white;
+    border-radius: 0.25em;
+    margin-top: 5em;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+.dropdown-item:hover {
+    background-color: #ffc107;
+    color: #212529;
+}

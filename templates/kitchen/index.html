@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content-container bg-default">
+    <div class="text-center">
+      <h2>Dishes were cooked</h2>
+      <h3>{{ num_dishes }}</h3>
+    </div>
+    <div class="text-center">
+      <h2>Staff were hired</h2>
+      <h3>{{ num_users }}</h3>
+    </div>
+    <div class="text-center">
+      <h2>Orders were processed</h2>
+      <h3>{{ num_orders }}</h3>
+    </div>
+    <div class="text-center">
+      <h2>Tasks were done</h2>
+      <h3>{{ num_tasks }}</h3>
+    </div>
+  </div>
+
+{% endblock %}

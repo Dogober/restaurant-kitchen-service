@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex align-items-center text-white p-3 m-3">
+    <h2>Orders</h2>
+    <a href="{% url 'kitchen:order-create' %}" class="btn btn-warning ml-3">Create</a>
+  </div>
+  {% for order in order_list %}
+    <div class="container mt-4">
+      <div class="card text-white bg-default mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>Options</div>
+          <div>
+            {% for order_id, all_completed in task_statuses %}
+              {% if order_id == order.id %}
+                {% if all_completed%}
+                  <a href="{% url 'kitchen:order-manager' pk=order.id %}" class="btn btn-success">
+                    Completed
+                  </a>
+                {% else %}
+                  <button class="btn btn-success" disabled>
+                    Completed
+                  </button>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            <a href="{% url 'kitchen:order-update' order.id %}" class="btn btn-warning">Update</a>
+            <a href="{% url 'kitchen:order-delete' order.id %}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Created_at: {{ order.created_at }}</h5>
+          <p class="card-text">Dishes: {{ order.dishes.all|join:", " }}</p>
+          <p class="card-text">Status: {{ order.get_status_display }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  {% include "includes/pagination.html" %}
+{% endblock %}

@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-default rounded">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+          aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href={% url 'kitchen:staff-list' %}>Staff <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href={% url 'kitchen:order-list' %}>Orders <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="kitchenLibrary" role="button"
+           data-toggle="dropdown" aria-expanded="false">
+          Kitchen library
+        </a>
+        <div class="dropdown-menu" aria-labelledby="kitchenLibrary">
+          <a class="dropdown-item" href="{% url 'kitchen:dish-type-list' %}">Dish types</a>
+          <a class="dropdown-item" href="{% url 'kitchen:ingredient-list' %}">Ingredients</a>
+          <a class="dropdown-item" href="{% url 'kitchen:category-list' %}">Categories</a>
+          <a class="dropdown-item" href="{% url 'kitchen:dish-list' %}">Dishes</a>
+        </div>
+      </li>
+    </ul>
+    {% if user.is_authenticated %}
+      <a class="nav-link text-white" href="{% url 'kitchen:staff-detail' user.id %}">User: {{ user.get_username }}</a>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning">Logout</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'kitchen:sign-up' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning mr-2">Sign up</button>
+      </form>
+      <button class="btn btn-warning" href="{% url 'login' %}?next={{ request.path }}">Login</button>
+    {% endif %}
+  </div>
+</nav>

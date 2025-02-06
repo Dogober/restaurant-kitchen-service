@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="container mt-5 mb-5">
+    <div class="row">
+      <div class="col-md-7 bg-default rounded mr-5 p-3">
+        <h2>Create a dish</h2>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ dish_form|crispy }}
+          <button type="submit" name="dish_form" class="btn btn-warning">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-4 bg-default rounded p-3">
+        <h2>Create a task</h2>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ task_form|crispy }}
+          <button type="submit" name="task_form" class="btn btn-warning mb-3">Submit</button>
+        </form>
+        <hr>
+        <h2>My tasks</h2>
+        <ul class="list-group mt-3">
+          {% for task in tasks %}
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ task.dish.name }}</strong> - {{ task.description }}<br>
+                  Status: {{ task.get_status_display }}
+                </div>
+                {% if task.status != "completed" %}
+                  <a href="{% url 'kitchen:task-manager' user_id=staff.id task_id=task.id %}"
+                   class="btn btn-success">Done</a>
+                {% endif %}
+              </div>
+            </li>
+          {% empty %}
+            <li class="list-group-item">There is no any tasks</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
