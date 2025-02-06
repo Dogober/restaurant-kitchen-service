@@ -56,9 +56,7 @@ class StaffListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(StaffListView, self).get_context_data(**kwargs)
         username = self.request.GET.get("username", "")
-        context["search_form"] = StaffSearchForm(
-            initial={"username": username}
-        )
+        context["search_form"] = StaffSearchForm(initial={"username": username})
         return context
 
     def get_queryset(self):
@@ -100,9 +98,7 @@ class StaffDetailView(LoginRequiredMixin, generic.DetailView):
                 dish = dish_form.save(commit=False)
                 dish.save()
                 dish.users.add(dish_form.cleaned_data["assigned_chef"])
-                dish.ingredients.add(
-                    *dish_form.cleaned_data["assigned_ingredients"]
-                )
+                dish.ingredients.add(*dish_form.cleaned_data["assigned_ingredients"])
                 return redirect("kitchen:staff-detail", pk=self.object.pk)
         elif "task_form" in request.POST:
             dish_form = DishForm()
@@ -150,9 +146,7 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
         form = DishTypeSearchForm(self.request.GET)
         queryset = DishType.objects.all()
         if form.is_valid():
-            queryset = queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -192,9 +186,7 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
         form = CategorySearchForm(self.request.GET)
         queryset = Category.objects.prefetch_related("ingredients")
         if form.is_valid():
-            queryset = queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -229,9 +221,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
         form = IngredientSearchForm(self.request.GET)
         queryset = Ingredient.objects.select_related("category")
         if form.is_valid():
-            queryset = queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -254,9 +244,7 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class OrderListView(LoginRequiredMixin, generic.ListView):
     model = Order
-    queryset = Order.objects.prefetch_related("tasks").filter(
-        ~Q(status="completed")
-    )
+    queryset = Order.objects.prefetch_related("tasks").filter(~Q(status="completed"))
     paginate_by = 2
 
     def get_context_data(self, **kwargs):
@@ -307,9 +295,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
         form = DishSearchForm(self.request.GET)
         queryset = Dish.objects.prefetch_related("users", "ingredients")
         if form.is_valid():
-            queryset = queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            queryset = queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
 
 
@@ -331,9 +317,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def task_manager_view(
-        request: HttpRequest, user_id: int, task_id: int
-) -> HttpResponse:
+def task_manager_view(request: HttpRequest, user_id: int, task_id: int) -> HttpResponse:
     task = Task.objects.get(pk=task_id)
     task.status = "completed"
     task.save()
@@ -344,9 +328,7 @@ def task_manager_view(
 def order_manager_view(request: HttpRequest, pk: int) -> HttpResponse:
     order = Order.objects.get(id=pk)
     task_statuses = [task.status for task in order.tasks.all()]
-    if task_statuses and task_statuses.count("completed") == len(
-            task_statuses
-    ):
+    if task_statuses and task_statuses.count("completed") == len(task_statuses):
         order.status = "completed"
         order.save()
     return redirect("kitchen:order-list")

@@ -115,12 +115,8 @@ urlpatterns = [
     path("orders/<int:pk>/", order_manager_view, name="order-manager"),
     path("dishes/", DishListView.as_view(), name="dish-list"),
     path("dishes/create/", DishCreateView.as_view(), name="dish-create"),
-    path(
-        "dishes/<int:pk>/update/", DishUpdateView.as_view(), name="dish-update"
-    ),
-    path(
-        "dishes/<int:pk>/delete/", DishDeleteView.as_view(), name="dish-delete"
-    ),
+    path("dishes/<int:pk>/update/", DishUpdateView.as_view(), name="dish-update"),
+    path("dishes/<int:pk>/delete/", DishDeleteView.as_view(), name="dish-delete"),
     path("sign_up/", sign_up_view, name="sign-up"),
 ]
 

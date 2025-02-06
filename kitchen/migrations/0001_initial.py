@@ -281,9 +281,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "dishes",
-                    models.ManyToManyField(
-                        related_name="orders", to="kitchen.dish"
-                    ),
+                    models.ManyToManyField(related_name="orders", to="kitchen.dish"),
                 ),
             ],
             options={

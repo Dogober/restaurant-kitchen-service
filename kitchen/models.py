@@ -21,9 +21,7 @@ class User(AbstractUser):
     ]
 
     years_of_experience = models.IntegerField(null=True)
-    position = models.CharField(
-        max_length=6, choices=POSITION_CHOICES, default="chef"
-    )
+    position = models.CharField(max_length=6, choices=POSITION_CHOICES, default="chef")
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
@@ -61,9 +59,7 @@ class Dish(models.Model):
     dish_type = models.ForeignKey(
         DishType, on_delete=models.CASCADE, related_name="dishes"
     )
-    users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="dishes"
-    )
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="dishes")
     ingredients = models.ManyToManyField(Ingredient, related_name="dishes")
 
     class Meta:
@@ -82,9 +78,7 @@ class Order(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     dishes = models.ManyToManyField(Dish, related_name="orders")
-    status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default="pending"
-    )
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
 
     class Meta:
         ordering = ["created_at"]
@@ -102,21 +96,15 @@ class Task(models.Model):
     ]
 
     created_at = models.DateTimeField(auto_now_add=True)
-    dish = models.ForeignKey(
-        Dish, on_delete=models.CASCADE, related_name="tasks"
-    )
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, related_name="tasks")
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="tasks",
     )
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="tasks"
-    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="tasks")
     description = models.TextField()
-    status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default="pending"
-    )
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
 
     class Meta:
         unique_together = ("dish", "user", "order")
