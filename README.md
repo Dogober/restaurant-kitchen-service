@@ -1,6 +1,6 @@
 # restaurant-kitchen-service
 Management system in which chefs can create new dishes and their types, as well as designate chefs responsible for preparing each dish
-[restaurant-kitchen-service-diagram.drawio](restaurant-kitchen-service-diagram.drawio)
+![db-model-diagram](restaurant-kitchen-service-diagram.drawio)
 
 Not implemented features:
  - create the tests
