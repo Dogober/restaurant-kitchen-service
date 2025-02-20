@@ -105,7 +105,7 @@ class TaskFilterForm(forms.Form):
     username = forms.ChoiceField(
         required=False,
         label="Chef Username",
-        choices=[
+        choices=[("", "All")] + [
             (user.username, user.username) for user in User.objects.all()
         ],
         widget=forms.Select(attrs={"class": "custom-select"})
