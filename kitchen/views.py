@@ -15,7 +15,7 @@ from kitchen.forms import (
     StaffSearchForm,
     DishTypeSearchForm,
     CategorySearchForm,
-    DishSearchForm,
+    DishSearchForm, TaskFilterForm,
 )
 from kitchen.models import (
     Dish,
@@ -67,6 +67,30 @@ class StaffListView(LoginRequiredMixin, generic.ListView):
                 username__icontains=form.cleaned_data["username"]
             )
         return queryset
+
+
+class TaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    template_name = "kitchen/task_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        status = self.request.GET.get("status")
+        username = self.request.GET.get("username")
+
+        if status:
+            queryset = queryset.filter(status=status)
+
+        if username:
+            queryset = queryset.filter(user__username=username)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = TaskFilterForm(self.request.GET)
+        return context
 
 
 class StaffCreateView(LoginRequiredMixin, generic.CreateView):

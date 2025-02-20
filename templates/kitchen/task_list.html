@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex align-items-center text-white p-3 m-3 justify-content-between">
+    <div class="d-flex justify-content-start align-items-center">
+      <h2>Tasks</h2>
+    </div>
+    <form method="get" class="d-flex align-items-end mb-4">
+      <div class="mr-3">
+        {{ filter_form.status.label_tag }}
+        {{ filter_form.status }}
+      </div>
+      <div class="mr-3">
+        {{ filter_form.username.label_tag }}
+        {{ filter_form.username }}
+      </div>
+      <button type="submit" class="btn btn-warning">Filter</button>
+    </form>
+  </div>
+  {% for task in task_list %}
+    <div class="container mt-4">
+      <div class="card text-white bg-default mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Created at: {{ task.created_at }}</h5>
+          <p class="card-text">Description: {{ task.description }}</p>
+          <p class="card-text">Order: {{ task.order.id }}</p>
+          <p class="card-text">Dish: {{ task.dish.name }}</p>
+          <p class="card-text">Chef: {{ task.user.username }}</p>
+          <p class="card-text">Status: {{ task.status }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

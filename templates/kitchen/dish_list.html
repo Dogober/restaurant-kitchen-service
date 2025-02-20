@@ -25,7 +25,6 @@
           <p class="card-text">Description: {{ dish.description }}</p>
           <p class="card-text">Price: {{ dish.price }}$</p>
           <p class="card-text">Dish type: {{ dish.dish_type.name }}</p>
-          <p class="card-text">Chefs: {{ dish.users.all|join:", " }}</p>
           <p class="card-text">Ingredients: {{ dish.ingredients.all|join:", " }}</p>
         </div>
       </div>

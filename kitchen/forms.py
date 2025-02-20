@@ -89,3 +89,24 @@ class DishSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(attrs={"placeholder": "Search by name"}),
     )
+
+
+class TaskFilterForm(forms.Form):
+    status = forms.ChoiceField(
+        choices=[("", "All")] + Task.STATUS_CHOICES,
+        required=False,
+        label="Status",
+        widget=forms.Select(
+            attrs={
+                "class": "custom-select",
+            }
+        )
+    )
+    username = forms.ChoiceField(
+        required=False,
+        label="Chef Username",
+        choices=[
+            (user.username, user.username) for user in User.objects.all()
+        ],
+        widget=forms.Select(attrs={"class": "custom-select"})
+    )
