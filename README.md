@@ -18,6 +18,12 @@ source venv/bin/activate
 pip -r install requirements.txt
 ```
 
+## To run the project
+
+```shell
+python manage.py runserver
+```
+
 ## Features
 
 * Authentication and registration functionality for User (staff member)
